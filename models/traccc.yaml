@@ -17,39 +17,52 @@ datatypes:
 devices:
   - A5000
   - Epyc
+  - SeedingMonster
 interconnects:
   - source: A5000
     destination: Epyc
     bandwidth: 100
     bidirectional: true
+  - source: A5000
+    destination: SeedingMonster
+    bandwidth: 10000
+  - source: SeedingMonster
+    destination: Epyc
+    bandwidth: 1000
 algorithms:
   measurement_formation:
     in_type: hits
     out_type: measurements
     implementations:
       - device: A5000
-        throughput: 10
+        throughput: 10.11
       - device: Epyc
-        throughput: 5
+        throughput: 5.091
   spacepoint_formation:
     in_type: measurements
     out_type: spacepoints
     implementations:
       - device: Epyc
-        throughput: 10
+        throughput: 10.411
+      - device: A5000
+        throughput: 10.411
   seed_finding:
     in_type: spacepoints
     out_type: seeds
     implementations:
       - device: A5000
-        throughput: 1
+        throughput: 1.9237
       - device: Epyc
-        throughput: 100
+        throughput: 1.2737
+      - device: SeedingMonster
+        throughput: 1000
   ckf:
     in_type: seeds
     out_type: prototracks
     implementations:
       - device: Epyc
-        throughput: 500
+        throughput: 500.22
+      - device: A5000
+        throughput: 500.22
 source: hits
 sink: prototracks

@@ -39,29 +39,38 @@ class TaskGraph(pydantic.BaseModel):
     source: str
     sink: str
 
-    @pydantic.model_validator(mode='after')
+    @pydantic.model_validator(mode="after")
     def datatype_names_valid(self):
         types = self.datatypes.keys()
         devices = self.devices
 
         for i in self.interconnects:
             if i.source not in devices:
-                raise ValueError('Interconnect source device \"%s\" does not exist.' % (i.source))
+                raise ValueError(
+                    'Interconnect source device "%s" does not exist.' % (i.source)
+                )
 
             if i.destination not in devices:
-                raise ValueError('Interconnect destination device \"%s\" does not exist.' % (i.destination))
+                raise ValueError(
+                    'Interconnect destination device "%s" does not exist.'
+                    % (i.destination)
+                )
 
         for a in self.algorithms.values():
             if a.in_type not in types:
-                raise ValueError('Algorithm input type \"%s\" does not exist.' % (a.in_type))
+                raise ValueError(
+                    'Algorithm input type "%s" does not exist.' % (a.in_type)
+                )
 
             if a.out_type not in types:
-                raise ValueError('Algorithm output type \"%s\" does not exist.' % (a.out_type))
+                raise ValueError(
+                    'Algorithm output type "%s" does not exist.' % (a.out_type)
+                )
 
         if self.source not in types:
-            raise ValueError('Source type \"%s\" does not exist.' % (self.source))
+            raise ValueError('Source type "%s" does not exist.' % (self.source))
 
         if self.sink not in types:
-            raise ValueError('Sink type \"%s\" does not exist.' % (self.sink))
+            raise ValueError('Sink type "%s" does not exist.' % (self.sink))
 
         return self
