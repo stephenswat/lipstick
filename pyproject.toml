@@ -7,7 +7,7 @@ readme = "README.md"
 packages = [{include = "lipstick"}]
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.9"
 z3-solver = "^4.12.4.0"
 networkx = "^3.2.1"
 pydantic = "^2.5.3"
