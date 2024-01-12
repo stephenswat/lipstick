@@ -1,19 +1,17 @@
-import z3
-import networkx
 import argparse
-import yaml
-import pathlib
-import logging
 import hashlib
+import logging
+import pathlib
 
 import matplotlib.pyplot
+import networkx
+import yaml
 
 import lipstick
 import lipstick.graph
-import lipstick.schema
 import lipstick.logging
+import lipstick.schema
 import lipstick.solve
-
 
 log = logging.getLogger(__name__)
 

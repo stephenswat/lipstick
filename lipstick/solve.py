@@ -1,6 +1,7 @@
-import z3
-import networkx
 import collections
+
+import networkx
+import z3
 
 
 def optimize_task_graph(tg: networkx.Graph):

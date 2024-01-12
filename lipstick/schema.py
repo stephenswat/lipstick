@@ -1,5 +1,6 @@
-import pydantic
 import typing
+
+import pydantic
 
 
 class DataType(pydantic.BaseModel):

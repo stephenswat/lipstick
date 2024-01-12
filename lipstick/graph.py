@@ -1,5 +1,4 @@
 import networkx
-import enum
 
 import lipstick.schema
 
