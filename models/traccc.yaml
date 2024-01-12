@@ -1,0 +1,55 @@
+datatypes:
+  hits:
+    size: 1
+    count: 1
+  measurements:
+    size: 1
+    count: 1
+  spacepoints:
+    size: 1
+    count: 1
+  seeds:
+    size: 1
+    count: 1
+  prototracks:
+    size: 1
+    count: 1
+devices:
+  - A5000
+  - Epyc
+interconnects:
+  - source: A5000
+    destination: Epyc
+    bandwidth: 100
+    bidirectional: true
+algorithms:
+  measurement_formation:
+    in_type: hits
+    out_type: measurements
+    implementations:
+      - device: A5000
+        throughput: 10
+      - device: Epyc
+        throughput: 5
+  spacepoint_formation:
+    in_type: measurements
+    out_type: spacepoints
+    implementations:
+      - device: Epyc
+        throughput: 10
+  seed_finding:
+    in_type: spacepoints
+    out_type: seeds
+    implementations:
+      - device: A5000
+        throughput: 1
+      - device: Epyc
+        throughput: 100
+  ckf:
+    in_type: seeds
+    out_type: prototracks
+    implementations:
+      - device: Epyc
+        throughput: 500
+source: hits
+sink: prototracks
