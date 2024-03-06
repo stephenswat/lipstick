@@ -1,5 +1,13 @@
 # Lipstick
 
+[<img src="docs/static/cern-logo.svg" alt="CERN logo" height="60px"/>](https://home.web.cern.ch/)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[<img src="docs/static/uva-logo.svg" alt="UvA logo" height="60px"/>](https://www.uva.nl/)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+[<img src="docs/static/pcs-logo.svg" alt="PCS logo" height="60px"/>](https://pcs-research.nl/)
+&nbsp;
+[<img src="docs/static/acts-logo.svg" alt="Acts logo" height="60px"/>](https://acts.readthedocs.io/en/latest/)
+
 _Lipstick_ is a tool for generating optimistic upper bounds for the throughput
 of tasks graphs running on heterogeneous systems. It works by treating the task
 graph as a flow problem, adding constraints about resource usage (in
