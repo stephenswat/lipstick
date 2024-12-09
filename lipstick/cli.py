@@ -7,6 +7,8 @@ import matplotlib.pyplot
 import networkx
 import yaml
 
+import z3
+
 import lipstick
 import lipstick.graph
 import lipstick.logging
@@ -29,6 +31,13 @@ def main():
         "-v",
         "--verbose",
         help="enable verbose output",
+        action="store_true",
+    )
+
+    parser.add_argument(
+        "-g",
+        "--graph",
+        help="display model graph",
         action="store_true",
     )
 
@@ -64,26 +73,35 @@ def main():
         len(graph.edges()),
     )
 
-    networkx.draw_networkx(graph)
-    matplotlib.pyplot.show()
+    if args.graph:
+        log.info("Attempting to visualise graph...")
+        networkx.draw_networkx(graph)
+        matplotlib.pyplot.show()
 
     log.info("Attempting to solve model...")
 
     sol = lipstick.solve.optimize_task_graph(graph)
 
     if sol:
-        log.info("Problem is satisfiable!")
+        log.info("Problem is [bold green]satisfiable[/]!")
         (f, m) = sol
+
+        if isinstance(f, z3.IntNumRef):
+            throughput = float(f.as_long())
+        elif isinstance(f, z3.RatNumRef):
+            throughput = float(f.as_fraction())
+        else:
+            raise ValueError("Unknown Z3 type %s!" % str(type(t)))
 
         log.info(
             "Maximum achievable throughput is [bold yellow]%.2f Hz[/]",
-            float(f.as_fraction()),
+            throughput,
         )
         # log.info("Model specification: %s", str(m))
 
-        print(m)
+        # print(m)
 
-        for i in m:
-            print(i, float(m[i].as_fraction()))
+        # for i in m:
+        # print(i, float(m[i].as_fraction()))
     else:
-        log.error("Problem is not satisfiable!")
+        log.error("Problem is [bold red]not satisfiable[/]!")
