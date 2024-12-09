@@ -32,13 +32,18 @@ class Algorithm(pydantic.BaseModel):
     implementations: typing.List[Implementation]
 
 
+class DataTypeDevice(pydantic.BaseModel):
+    type_: str = pydantic.Field(alias="type")
+    device: str
+
+
 class TaskGraph(pydantic.BaseModel):
     datatypes: typing.Dict[str, DataType]
     devices: typing.List[str]
     interconnects: typing.List[Interconnect]
     algorithms: typing.Dict[str, Algorithm]
-    source: str
-    sink: str
+    source: typing.Union[str, DataTypeDevice]
+    sink: typing.Union[str, DataTypeDevice]
 
     @pydantic.model_validator(mode="after")
     def datatype_names_valid(self):
@@ -68,10 +73,32 @@ class TaskGraph(pydantic.BaseModel):
                     'Algorithm output type "%s" does not exist.' % (a.out_type)
                 )
 
-        if self.source not in types:
-            raise ValueError('Source type "%s" does not exist.' % (self.source))
+        if isinstance(self.source, str):
+            if self.source not in types:
+                raise ValueError('Source type "%s" does not exist.' % (self.source))
+        elif isinstance(self.source, DataTypeDevice):
+            if self.source.type_ not in types:
+                raise ValueError(
+                    'Source type "%s" does not exist.' % (self.source.type_)
+                )
+            if self.source.device not in devices:
+                raise ValueError(
+                    'Source device "%s" does not exist.' % (self.source.device)
+                )
+        else:
+            raise ValueError("Source is of unknwon type %s." % str(type(self.source)))
 
-        if self.sink not in types:
-            raise ValueError('Sink type "%s" does not exist.' % (self.sink))
+        if isinstance(self.sink, str):
+            if self.sink not in types:
+                raise ValueError('Sink type "%s" does not exist.' % (self.sink))
+        elif isinstance(self.sink, DataTypeDevice):
+            if self.sink.type_ not in types:
+                raise ValueError('Sink type "%s" does not exist.' % (self.sink.type_))
+            if self.sink.device not in devices:
+                raise ValueError(
+                    'Sink device "%s" does not exist.' % (self.sink.device)
+                )
+        else:
+            raise ValueError("Sink is of unknwon type %s." % str(type(self.sink)))
 
         return self

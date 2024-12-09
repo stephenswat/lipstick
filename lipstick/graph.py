@@ -13,11 +13,19 @@ def reify(tg: lipstick.schema.TaskGraph) -> networkx.DiGraph:
         for d in tg.devices:
             g.add_node((t, d))
 
-            if t == tg.sink:
-                g.add_edge((t, d), "sink", **{"goal": True})
+            if isinstance(tg.sink, str):
+                if t == tg.sink:
+                    g.add_edge((t, d), "sink", **{"goal": True})
+            elif isinstance(tg.sink, lipstick.schema.DataTypeDevice):
+                if t == tg.sink.type_ and d == tg.sink.device:
+                    g.add_edge((t, d), "sink", **{"goal": True})
 
-            if t == tg.source:
-                g.add_edge("source", (t, d))
+            if isinstance(tg.source, str):
+                if t == tg.source:
+                    g.add_edge("source", (t, d))
+            elif isinstance(tg.source, lipstick.schema.DataTypeDevice):
+                if t == tg.source.type_ and d == tg.source.device:
+                    g.add_edge("source", (t, d))
 
         for i in tg.interconnects:
             res = "i:%s->%s" % (i.source, i.destination)
