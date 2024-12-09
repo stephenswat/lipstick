@@ -14,6 +14,7 @@ pydantic = "^2.5.3"
 pyyaml = "^6.0.1"
 rich = "^13.7.0"
 matplotlib = "^3.8.2"
+setuptools = "^75.6.0"
 
 [tool.poetry.scripts]
 lipstick = "lipstick.cli:main"
